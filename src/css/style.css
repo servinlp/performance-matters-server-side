@@ -1,0 +1,105 @@
+body {
+  margin: 0;
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color\a Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  background: #161628;
+  color: #ffffff; }
+
+h1, h2, h3 {
+  color: #F3D0A7; }
+
+h1 {
+  font-size: 4rem;
+  margin: 0; }
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0; }
+
+p {
+  margin: 0 0 1rem 0; }
+
+.empty {
+  font-size: 0;
+  padding: 5rem 0; }
+
+header {
+  padding: 1em;
+  font-size: 2em;
+  max-width: 80rem;
+  margin: 0 auto; }
+  header .subtitle {
+    display: block;
+    font-size: 2rem;
+    margin-top: 1em; }
+  header p {
+    display: inline-block;
+    font-size: 1.3rem; }
+  header a {
+    position: relative;
+    color: #ffffff;
+    font-size: 1.3rem;
+    text-decoration-skip: edges;
+    margin-right: 1.5em; }
+    header a::before {
+      content: '>';
+      position: absolute;
+      bottom: 0;
+      right: -1em;
+      color: #ffffff; }
+
+main {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 2em;
+  box-sizing: border-box; }
+
+ul.overview {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around; }
+  ul.overview li {
+    width: 30%;
+    min-width: 300px;
+    margin-bottom: 4em; }
+  ul.overview figure {
+    position: relative;
+    width: 100%;
+    margin: 0; }
+    ul.overview figure img {
+      width: 100%;
+      height: 25em;
+      object-fit: cover; }
+  ul.overview figcaption {
+    width: 100%;
+    background: #161628;
+    color: #F3D0A7;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.6em;
+    padding: 1em 0; }
+  ul.overview small {
+    font-size: 0.6em;
+    margin-left: 1em; }
+  ul.overview a {
+    text-decoration: none; }
+
+.details {
+  max-width: 60rem; }
+  .details picture {
+    display: block; }
+    .details picture img {
+      display: block;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 40em;
+      height: auto; }
+  .details h2 {
+    font-size: 1.5em;
+    text-align: center; }
+  .details a {
+    color: #ffffff; }
+  .details div {
+    font-size: 1.2em; }
+
+/*# sourceMappingURL=style.css.map */

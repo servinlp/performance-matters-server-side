@@ -1,0 +1,10 @@
+$font-fallback: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color
+Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+$font: 'Roboto', $font-fallback;
+
+// Colors
+$background: #161628;
+$titleColor: #F3D0A7;
+$white: #ffffff;
+
+$container-width: 80rem;

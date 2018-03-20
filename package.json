@@ -1,0 +1,38 @@
+{
+  "name": "project-oba",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "servinlp <servin.nissen@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "serve": "php -S localhost:4000",
+    "sass": "sass --watch ./src/css/style.scss:./src/css/style.css",
+    "sass:build": "sass ./src/css/style.scss:./src/css/style.css",
+    "js:watch": "onchange './src/js/*.js' -- yarn run js:build",
+    "js:build": "babel src/js --out-file build --source-maps",
+    "js": "webpack --mode development --module-bind js=babel-loader",
+    "build": "yarn run sass:build && yarn run js:build",
+    "start": "parallelshell \"yarn run serve\" \"yarn run sass\" \"yarn run js\""
+  },
+  "dependencies": {
+    "autoprefixer": "^8.1.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "cpy-cli": "^1.0.1",
+    "node-sass": "^4.7.2",
+    "onchange": "^3.3.0",
+    "parallelshell": "^3.0.2",
+    "parcel": "^0.0.1",
+    "parcel-bundler": "^1.6.2",
+    "uglifyjs-webpack-plugin": "^1.2.3",
+    "webpack": "^4.1.1"
+  },
+  "devDependencies": {
+    "webpack-cli": "^2.0.12"
+  }
+}
