@@ -1,0 +1,12 @@
+<li>
+	<a href="/c/<%= data.type.toLowerCase().replace( / /g, '-' ) %>">
+		<figure>
+			<% if ( data.items[ 0 ] ) { %>
+				<img src="<%= data.items[ 0 ].img %>" alt="<%= data.type %>">
+			<% } %>
+			<figcaption><%= data.type %>
+				<small>(<%= data.count %>)</small>
+			</figcaption>
+		</figure>
+	</a>
+</li>
