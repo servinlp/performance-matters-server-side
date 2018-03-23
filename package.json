@@ -8,17 +8,22 @@
     "serve": "nodemon app.js",
     "sass": "sass --watch ./src/css/style.scss:./public/css/style.css",
     "sass:build": "sass ./src/css/style.scss:./public/css/style.css",
+    "uglify": "uglifyjs --compress -- ./public/js/bundle.js -- --output ./bundle.min.js",
     "js:watch": "onchange './src/js/*.js' -- yarn run js:build",
-    "js:build": "parallelshel \"yarn run js:copy\" \"yarn run js:compile",
+    "js:build": "parallelshell \"yarn run js:copy\" \"yarn run js:compile\"",
     "js:copy": "cpx './src/js/*.js' public/js",
     "js:compile": "browserify ./public/js/index.js -o ./public/js/bundle.js -t [ babelify --presets [ env ] ]",
     "build": "yarn run sass:build && yarn run js:build",
     "start": "parallelshell \"yarn run serve\" \"yarn run sass\" \"yarn run js:watch\""
   },
+  "nodemonConfig": {
+	"ignore": ["public/*", "src/*", "views/*"]
+  },
   "dependencies": {
     "ejs": "^2.5.7",
     "express": "^4.16.3",
-    "node-fetch": "^2.1.1"
+    "node-fetch": "^2.1.1",
+    "uglify-js": "^3.3.16"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

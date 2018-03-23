@@ -388,7 +388,32 @@ var CategorieOverview = function () {
 		key: 'render',
 		value: function render() {
 
-			return '\n\t\t\t<header>\n\t\t\t\t<h1>Catalogus van de Amsterdamse geschiedenis</h1>\n\t\t\t\t<p class="subtitle">Browse door de geschiedenis van Amsterdam</p>\n\t\t\t\t<p>Categorie overzicht</p>\n\t\t\t</header>\n\t\t\t<main>\n\t\t\t\t<ul class="overview"></ul>\n\t\t\t</main>\n\t\t\t<div class="empty"></div>\n\t\t\t';
+			var fragment = document.createDocumentFragment(),
+			    main = document.createElement('main'),
+			    ul = document.createElement('ul'),
+			    div = document.createElement('div');
+
+			ul.classList.add('overview');
+			main.appendChild(ul);
+			div.classList.add('empty');
+
+			fragment.appendChild(main);
+			fragment.appendChild(div);
+
+			/*const reader = new FileReader()
+   	reader.addEventListener( 'load', function( event ) {
+   		console.log( event )
+   	} )
+   	reader.readAsText( '/overview_items.ejs' )*/
+
+			fetch('/overview_item.ejs').then(function (res) {
+				return res.text();
+			}).then(function (res) {
+
+				console.log(res);
+			});
+
+			return fragment;
 		}
 	}, {
 		key: 'renderNewData',
@@ -450,10 +475,6 @@ var CategorieOverview = function () {
 								break;
 
 							case 23:
-
-								this.data = this.data.splice(counter, this.data.length);
-
-							case 24:
 							case 'end':
 								return _context.stop();
 						}
@@ -602,25 +623,24 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+        value: true
 });
 
-var _routes = require('./routes.js');
-
-var _routes2 = _interopRequireDefault(_routes);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _helpers = require('./helpers.js');
 
 function initialize() {
 
-	var routes = new _routes2.default();
+        var a = Array.from(document.querySelectorAll('a'));
 
-	routes.goTo(window.location.pathname);
+        a.forEach(function (el) {
+
+                el.addEventListener('click', _helpers.handleClickEvent);
+        });
 }
 
 exports.default = initialize;
 
-},{"./routes.js":7}],7:[function(require,module,exports){
+},{"./helpers.js":4}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -747,16 +767,17 @@ var Routes = function () {
 				'/': function _(req) {
 
 					var categorieOverview = new _categorie_overview2.default();
-					document.body.insertAdjacentHTML('beforeend', categorieOverview.render());
+					document.body.appendChild(categorieOverview.render());
 
-					(0, _api.getCategories)(function (data) {
+					//getCategories( data => {
 
-						categorieOverview.categorieData = data;
+					//categorieOverview.categorieData = allData
 
-						/*setTimeout( () => {
-      		categorieOverview.renderNewData()
-      	}, 5000 )*/
-					});
+					/*setTimeout( () => {
+     		categorieOverview.renderNewData()
+     	}, 5000 )*/
+
+					//} )
 				},
 				'/c/:categorie': function () {
 					var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req) {

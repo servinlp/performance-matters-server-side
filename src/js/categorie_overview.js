@@ -13,17 +13,37 @@ class CategorieOverview {
 
 	render() {
 
-		return `
-			<header>
-				<h1>Catalogus van de Amsterdamse geschiedenis</h1>
-				<p class="subtitle">Browse door de geschiedenis van Amsterdam</p>
-				<p>Categorie overzicht</p>
-			</header>
-			<main>
-				<ul class="overview"></ul>
-			</main>
-			<div class="empty"></div>
-			`
+		const fragment = document.createDocumentFragment(),
+			main = document.createElement( 'main' ),
+			ul = document.createElement( 'ul' ),
+			div = document.createElement( 'div' )
+
+		ul.classList.add( 'overview' )
+		main.appendChild( ul )
+		div.classList.add( 'empty' )
+
+		fragment.appendChild( main )
+		fragment.appendChild( div )
+
+		/*const reader = new FileReader()
+
+		reader.addEventListener( 'load', function( event ) {
+
+			console.log( event )
+
+		} )
+
+		reader.readAsText( '/overview_items.ejs' )*/
+
+		fetch( '/overview_item.ejs' )
+			.then( res => res.text() )
+			.then( res => {
+
+				console.log( res )
+
+			} )
+
+		return fragment
 
 	}
 
@@ -73,8 +93,6 @@ class CategorieOverview {
 			counter++
 
 		}
-
-		this.data = this.data.splice( counter, this.data.length )
 
 	}
 

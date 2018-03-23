@@ -1,10 +1,14 @@
-import Routes from './routes.js'
+import { handleClickEvent } from './helpers.js'
 
 function initialize() {
 
-	const routes = new Routes()
+	const a = Array.from( document.querySelectorAll( 'a' ) )
 
-	routes.goTo( window.location.pathname )
+        a.forEach( el => {
+
+                el.addEventListener( 'click', handleClickEvent )
+
+        } )
 
 }
 

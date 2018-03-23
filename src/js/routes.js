@@ -46,11 +46,11 @@ class Routes {
 			'/': req => {
 
 				const categorieOverview = new CategorieOverview()
-				document.body.insertAdjacentHTML( 'beforeend', categorieOverview.render() )
+				document.body.appendChild( categorieOverview.render() )
 
-				getCategories( data => {
+				//getCategories( data => {
 
-					categorieOverview.categorieData = data
+					//categorieOverview.categorieData = allData
 
 					/*setTimeout( () => {
 
@@ -58,7 +58,7 @@ class Routes {
 
 					}, 5000 )*/
 
-				} )
+				//} )
 
 			},
 			'/c/:categorie': async req => {
