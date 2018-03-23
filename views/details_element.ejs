@@ -1,0 +1,17 @@
+<main class="details">
+	<picture>
+		<img src="<%= data.img %>" alt="">
+	</picture>
+	<div>
+		<h2><%= data.title %></h2>
+		<% if ( data.date ) { %>
+			<p class="date">Date: <%= data.date %></p>
+		<% } %>
+		<% if ( data.subjects ) { %>
+			<p class="subjects">Subjects: <%= data.subjects %></p>
+		<% } %>
+		<% if ( data.spatial ) { %>
+			<p class="spatial">Spatial: <a href="<%= data.spatial %>"><%= data.spatial %></a></p>
+		<% } %>
+	</div>
+</main>

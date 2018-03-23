@@ -3,9 +3,10 @@
 <header>
         <h1>Catalogus van de Amsterdamse geschiedenis</h1>
 	<a href="/">Categorie overview</a>
-        <p><%= categorie %></p>
+        <a href="/c/<%= categorie %>"><%= categorie %></a>
+	<p><%= data.title %></p>
 </header>
 
-<%- include( './overview' ) %>
+<%- include( './details_element', { data: data } ) %>
 
 <%- include( './end' ) %>

@@ -1,12 +1,21 @@
 <li>
+	<% if ( data.type ) { %>
 	<a href="/c/<%= data.type.toLowerCase().replace( / /g, '-' ) %>">
+	<% } else { %>
+		<a href="/c/<%= categorie %>/single/<%= data.titleSlug %>">
+	<% }%>
 		<figure>
-			<% if ( data.items[ 0 ] ) { %>
-				<img src="<%= data.items[ 0 ].img %>" alt="<%= data.type %>">
+			<% if ( data.items && data.items.length > 0 ) { %>
+				<img src="<%= data.items[ 0 ].img %>" alt="">
+				<figcaption><%= data.type %>
+					<small>(<%= data.count %>)</small>
+				</figcaption>
+			<% } else { %>
+				<img src="<%= data.img %>" alt="">
+				<figcaption>
+					<%= data.title %>
+				</figcaption>
 			<% } %>
-			<figcaption><%= data.type %>
-				<small>(<%= data.count %>)</small>
-			</figcaption>
 		</figure>
 	</a>
 </li>

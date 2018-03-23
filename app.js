@@ -9,6 +9,13 @@ app.set( 'views', './views' )
 app.use( express.static( 'public' ) )
 app.use( express.static( 'views' ) )
 
+app.get( '*', ( req, res, next ) => {
+
+	res.locals.allData = apiData
+	next()
+
+} )
+
 app.get( '/', ( req, res ) => {
 
 	res.locals.data = apiData
@@ -19,8 +26,24 @@ app.get( '/', ( req, res ) => {
 
 app.get( '/c/:categorie', ( req, res ) => {
 
-	console.log( req.params.categorie )
-	res.render( 'categorie' )
+	const data = apiData.filter( el => el.type === req.params.categorie )[ 0 ]
+
+	res.render( 'categorie', {
+		categorie: req.params.categorie,
+		data: data.items
+	} )
+
+} )
+
+app.get( '/c/:categorie/single/:slug', ( req, res ) => {
+
+	const data = apiData.filter( el => el.type === req.params.categorie )[ 0 ].items
+			.filter( el => el.titleSlug === req.params.slug )[ 0 ]
+
+	res.render( 'details', {
+		categorie: req.params.categorie,
+		data: data
+	} )
 
 } )
 

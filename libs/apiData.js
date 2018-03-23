@@ -51,8 +51,6 @@ async function getFirstXCategories( res, num = 20 ) {
 
 	for ( let i = 0; i < num; i++ ) {
 
-		console.log( res[ i ].type )
-
 		promises.push( singleCategorieData( res[ i ].type ) )
 
 	}
@@ -60,8 +58,6 @@ async function getFirstXCategories( res, num = 20 ) {
 	try {
 
 		const categorieData = await Promise.all( promises )
-
-		// console.log( categorieData )
 
 		categorieData.forEach( el => {
 
@@ -72,9 +68,7 @@ async function getFirstXCategories( res, num = 20 ) {
 			} else {
 
 				const curr = data.filter( d => d.type === el[ 0 ].categorie )[ 0 ]
-				console.log( curr )
 				curr.items = curr.items.concat( el )
-				console.log( 'curr', curr )
 
 			}
 		} )

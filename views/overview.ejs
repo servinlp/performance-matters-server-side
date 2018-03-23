@@ -1,7 +1,7 @@
 <main>
         <ul class="overview">
 		<% for ( var i = 0; i < 20; i++ ) { %>
-			<%- include( './overview_item', { data: data[ i ], i: i } ) %>
+			<%- include( './overview_item', { data: data[ i ] } ) %>
 		<% }  %>
         </ul>
 </main>
