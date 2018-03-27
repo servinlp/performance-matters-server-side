@@ -2,12 +2,17 @@ const express =		require( 'express' ),
       ejs =		require( 'ejs' ),
       app =		express(),
       apiData =		require( './libs/apiData' ),
+      compression =	require( 'compression' ),
+      helmet =		require( 'helmet' ),
       PORT =		8000
 
 app.set( 'view engine', 'ejs' )
 app.set( 'views', './views' )
 app.use( express.static( 'public' ) )
 app.use( express.static( 'views' ) )
+
+app.use( compression() )
+app.use( helmet() )
 
 app.get( '*', ( req, res, next ) => {
 

@@ -1,4 +1,5 @@
-import CategorieOverview from './categorie_overview.js'
+import Overview from './overview.js'
+import renderHeader from './header.js'
 import CategorieItem from './categorie_item.js'
 import { getCategories, singleCategorieData, singleItemData } from './api.js'
 
@@ -45,51 +46,39 @@ class Routes {
 		return {
 			'/': req => {
 
-				const categorieOverview = new CategorieOverview()
+				if ( req.internal ) {
+
+					document.body.appendChild( renderHeader() )
+
+				}
+
+				const categorieOverview = new Overview()
 				document.body.appendChild( categorieOverview.render() )
-
-				//getCategories( data => {
-
-					//categorieOverview.categorieData = allData
-
-					/*setTimeout( () => {
-
-						categorieOverview.renderNewData()
-
-					}, 5000 )*/
-
-				//} )
 
 			},
 			'/c/:categorie': async req => {
 
-				try {
-					const categorieData = await singleCategorieData( req.paths.params.categorie ),
-						categorieItem = new CategorieItem( categorieData )
+				if ( req.internal ) {
 
-					document.body.appendChild( categorieItem.render() )
-
-				} catch ( err ) {
-
-					console.log( err )
+					document.body.appendChild( renderHeader( [ [ 'Categorie overview', '/' ], [ req.paths.params.categorie ] ] ) )
 
 				}
+
+				const categorieOverview = new Overview( req.paths.params.categorie )
+                                document.body.appendChild( categorieOverview.render() )
 
 			},
 			'/c/:categorie/single/:single': async req => {
 
-				try {
+				if ( req.internal ) {
 
-					const singleData = await singleItemData( req.paths.params.categorie, req.paths.params.single ),
-					singleItem = new CategorieItem( singleData )
-
-					document.body.appendChild( singleItem.renderDetailsPage() )
-
-				} catch ( err ) {
-
-					console.log( err )
+					document.body.appendChild( renderHeader( [ [ 'Categorie overview', '/' ], [ req.paths.params.categorie, `/c/${ req.paths.params.categorie }` ], [ req.paths.params.single ] ] ) )
 
 				}
+
+				const singleItem = new CategorieItem( req.paths.params.categorie, req.paths.params.single )
+
+				singleItem.render()
 
 			}
 

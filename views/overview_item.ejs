@@ -1,6 +1,6 @@
 <li>
 	<% if ( data.type ) { %>
-	<a href="/c/<%= data.type.toLowerCase().replace( / /g, '-' ) %>">
+		<a href="/c/<%= data.type.toLowerCase().replace( / /g, '-' ) %>">
 	<% } else { %>
 		<a href="/c/<%= categorie %>/single/<%= data.titleSlug %>">
 	<% }%>

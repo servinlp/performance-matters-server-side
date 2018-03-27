@@ -137,18 +137,25 @@ var _helpers = require('./helpers.js');
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var CategorieItem = function () {
-	function CategorieItem(data) {
-		var count = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+	function CategorieItem(categorie, single) {
+		var _this = this;
 
 		_classCallCheck(this, CategorieItem);
 
-		this.data = data;
-		this.count = count;
+		this.categorie = categorie;
+		this.single = single;
+
+		this.data = data.filter(function (el) {
+			return el.type === _this.categorie;
+		})[0].items.filter(function (el) {
+			return el.titleSlug === _this.single;
+		})[0];
 	}
 
 	_createClass(CategorieItem, [{
 		key: 'render',
 		value: function render() {
+			var _this2 = this;
 
 			if (typeof document.createDocumentFragment === 'function') {
 
@@ -158,194 +165,19 @@ var CategorieItem = function () {
 				this.element = document.createElement('div');
 			}
 
-			var header = document.createElement('header'),
-			    title = document.createElement('h1'),
-			    breadcrumb = document.createElement('a'),
-			    subTitle = document.createElement('p'),
-			    main = document.createElement('main'),
-			    ul = document.createElement('ul'),
-			    empty = document.createElement('div');
+			fetch('/details_element.ejs').then(function (res) {
+				return res.text();
+			}).then(function (res) {
 
-			empty.classList.add('empty');
-
-			title.textContent = 'Catalogus van de Amsterdamse geschiedenis';
-
-			breadcrumb.textContent = 'Categorie overview';
-			breadcrumb.setAttribute('href', '/');
-			breadcrumb.addEventListener('click', _helpers.handleClickEvent);
-
-			subTitle.textContent = this.data[0].categorie;
-
-			header.appendChild(title);
-			header.appendChild(breadcrumb);
-			header.appendChild(subTitle);
-
-			ul.classList.add('overview');
-
-			main.appendChild(ul);
-
-			this.element.appendChild(header);
-			this.element.appendChild(main);
-			this.element.appendChild(empty);
-
-			var counter = 0;
-
-			while (counter < 20) {
-
-				var el = this.data[counter],
-				    li = this.renderThumbnail(el.title, el, el.slug);
-
-				ul.appendChild(li);
-
-				counter++;
-			}
-
-			this.data = this.data.splice(counter, this.data.length);
-
-			return this.element;
+				_this2.renderFromTemplate(res);
+			});
 		}
 	}, {
-		key: 'renderThumbnail',
-		value: function renderThumbnail(title, data, url) {
+		key: 'renderFromTemplate',
+		value: function renderFromTemplate(template) {
 
-			title = title || this.data.categorie;
-			data = data || this.data;
-			url = url || '/c/' + this.data.categorie.toLowerCase().replace(/ /g, '-');
-
-			var li = document.createElement('li'),
-			    a = document.createElement('a'),
-			    figure = document.createElement('figure'),
-			    figcaption = document.createElement('figcaption'),
-			    small = document.createElement('small'),
-			    img = document.createElement('img');
-
-			img.setAttribute('src', data.img);
-			img.setAttribute('alt', data.categorie);
-
-			figcaption.textContent = title;
-
-			a.setAttribute('href', url);
-			a.addEventListener('click', _helpers.handleClickEvent);
-
-			if (this.count) {
-
-				small.textContent = '(' + this.count + ')';
-				figcaption.appendChild(small);
-			}
-
-			figure.appendChild(img);
-			figure.appendChild(figcaption);
-
-			a.appendChild(figure);
-
-			li.appendChild(a);
-
-			return li;
-		}
-	}, {
-		key: 'renderDetailsPage',
-		value: function renderDetailsPage() {
-
-			if (typeof document.createDocumentFragment === 'function') {
-
-				this.element = document.createDocumentFragment();
-			} else {
-
-				this.element = document.createElement('div');
-			}
-
-			var header = document.createElement('header'),
-			    title = document.createElement('h1'),
-			    breadcrumb = document.createElement('a'),
-			    secondBreadcrumb = document.createElement('a'),
-			    subTitle = document.createElement('p'),
-			    main = document.createElement('main'),
-			    picture = document.createElement('picture'),
-			    img = document.createElement('img'),
-			    pictureTitle = document.createElement('h2'),
-			    textBlock = document.createElement('div');
-
-			title.textContent = 'Catalogus van de Amsterdamse geschiedenis';
-
-			breadcrumb.textContent = 'Categorie overview';
-			breadcrumb.setAttribute('href', '/');
-			breadcrumb.addEventListener('click', _helpers.handleClickEvent);
-
-			secondBreadcrumb.textContent = this.data.categorie;
-			secondBreadcrumb.setAttribute('href', '/c/' + this.data.categorie.toLowerCase());
-			secondBreadcrumb.addEventListener('click', _helpers.handleClickEvent);
-
-			subTitle.textContent = this.data.title;
-
-			header.appendChild(title);
-			header.appendChild(breadcrumb);
-			header.appendChild(secondBreadcrumb);
-			header.appendChild(subTitle);
-
-			main.classList.add('details');
-
-			img.setAttribute('src', this.data.img);
-			img.setAttribute('alt', this.data.title);
-
-			pictureTitle.textContent = this.data.title;
-
-			picture.appendChild(img);
-
-			main.appendChild(picture);
-			textBlock.appendChild(pictureTitle);
-
-			main.appendChild(textBlock);
-
-			this.element.appendChild(header);
-			this.element.appendChild(main);
-
-			if (this.data.description) {
-
-				var description = document.createElement('p');
-				description.classList.add('description');
-				description.textContent = this.data.description;
-				textBlock.appendChild(description);
-			}
-
-			if (this.data.date) {
-
-				var date = document.createElement('p');
-				date.classList.add('date');
-				date.textContent = 'Date: ' + this.data.date;
-				textBlock.appendChild(date);
-			}
-
-			if (this.data.subjects) {
-
-				var a = document.createElement('a'),
-				    p = document.createElement('p');
-
-				p.classList.add('subjects');
-				p.textContent = 'Subjects: ';
-
-				a.textContent = this.data.subjects;
-				a.setAttribute('href', this.data.subjects);
-
-				p.appendChild(a);
-				textBlock.appendChild(p);
-			}
-
-			if (this.data.spatial) {
-
-				var _a = document.createElement('a'),
-				    _p = document.createElement('p');
-
-				_p.classList.add('spatial');
-				_p.textContent = 'Spatial: ';
-
-				_a.textContent = this.data.spatial;
-				_a.setAttribute('href', this.data.spatial);
-
-				_p.appendChild(_a);
-				textBlock.appendChild(_p);
-			}
-
-			return this.element;
+			var details = ejs.render(template, { data: this.data });
+			document.body.insertAdjacentHTML('beforeend', details);
 		}
 	}]);
 
@@ -361,149 +193,50 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _helpers = require('./helpers.js');
 
-var _categorie_item = require('./categorie_item.js');
+function renderHeader(arr) {
 
-var _categorie_item2 = _interopRequireDefault(_categorie_item);
+	var header = document.createElement('header'),
+	    title = document.createElement('h1'),
+	    p = document.createElement('p');
 
-var _api = require('./api.js');
+	title.textContent = 'Catalogus van de Amsterdamse geschiedenis';
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	header.appendChild(title);
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+	if (!arr || arr.length === 0) {
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+		var subtitle = document.createElement('p');
+		subtitle.classList.add('subtitle');
+		subtitle.textContent = 'Browse door de geschiedenis van Amsterdam';
+		p.textContent = 'Categorie overzicht';
 
-var CategorieOverview = function () {
-	function CategorieOverview() {
-		_classCallCheck(this, CategorieOverview);
+		header.appendChild(subtitle);
+		header.appendChild(p);
+	} else {
 
-		this.allData = [];
-		this.data = [];
-		this.categorieItems = [];
+		for (var i = 0; i < arr.length - 1; i++) {
+
+			var el = arr[i],
+			    a = document.createElement('a');
+			a.setAttribute('href', el[1]);
+			a.textContent = el[0];
+			a.addEventListener('click', _helpers.handleClickEvent);
+
+			header.appendChild(a);
+		}
+
+		p.textContent = arr[arr.length - 1][0];
+		header.appendChild(p);
 	}
 
-	_createClass(CategorieOverview, [{
-		key: 'render',
-		value: function render() {
+	return header;
+}
 
-			var fragment = document.createDocumentFragment(),
-			    main = document.createElement('main'),
-			    ul = document.createElement('ul'),
-			    div = document.createElement('div');
+exports.default = renderHeader;
 
-			ul.classList.add('overview');
-			main.appendChild(ul);
-			div.classList.add('empty');
-
-			fragment.appendChild(main);
-			fragment.appendChild(div);
-
-			/*const reader = new FileReader()
-   	reader.addEventListener( 'load', function( event ) {
-   		console.log( event )
-   	} )
-   	reader.readAsText( '/overview_items.ejs' )*/
-
-			fetch('/overview_item.ejs').then(function (res) {
-				return res.text();
-			}).then(function (res) {
-
-				console.log(res);
-			});
-
-			return fragment;
-		}
-	}, {
-		key: 'renderNewData',
-		value: function () {
-			var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-				var ul, counter, i, el, categorieData, item, li;
-				return regeneratorRuntime.wrap(function _callee$(_context) {
-					while (1) {
-						switch (_context.prev = _context.next) {
-							case 0:
-								ul = document.querySelector('.overview');
-								counter = 0, i = 0;
-
-							case 2:
-								if (!(counter < 20)) {
-									_context.next = 23;
-									break;
-								}
-
-								el = this.data[i];
-								_context.prev = 4;
-								_context.next = 7;
-								return (0, _api.singleCategorieData)(el.type);
-
-							case 7:
-								categorieData = _context.sent;
-
-								if (!(categorieData.length === 0)) {
-									_context.next = 11;
-									break;
-								}
-
-								i++;
-								return _context.abrupt('continue', 2);
-
-							case 11:
-								item = new _categorie_item2.default(categorieData[0], el.count), li = item.renderThumbnail();
-
-
-								this.categorieItems.push(item);
-								ul.appendChild(li);
-
-								_context.next = 19;
-								break;
-
-							case 16:
-								_context.prev = 16;
-								_context.t0 = _context['catch'](4);
-
-
-								console.log(_context.t0);
-
-							case 19:
-
-								i++;
-								counter++;
-
-								_context.next = 2;
-								break;
-
-							case 23:
-							case 'end':
-								return _context.stop();
-						}
-					}
-				}, _callee, this, [[4, 16]]);
-			}));
-
-			function renderNewData() {
-				return _ref.apply(this, arguments);
-			}
-
-			return renderNewData;
-		}()
-	}, {
-		key: 'categorieData',
-		set: function set(data) {
-
-			this.allData = data;
-			this.data = data;
-			this.renderNewData();
-		}
-	}]);
-
-	return CategorieOverview;
-}();
-
-exports.default = CategorieOverview;
-
-},{"./api.js":1,"./categorie_item.js":2}],4:[function(require,module,exports){
+},{"./helpers.js":4}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -605,7 +338,7 @@ exports.unique = unique;
 exports.handleClickEvent = handleClickEvent;
 exports.createObserver = createObserver;
 
-},{"./routes.js":7}],5:[function(require,module,exports){
+},{"./routes.js":8}],5:[function(require,module,exports){
 'use strict';
 
 var _init = require('./init.js');
@@ -649,9 +382,118 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _categorie_overview = require('./categorie_overview.js');
+var _categorie_item = require('./categorie_item.js');
 
-var _categorie_overview2 = _interopRequireDefault(_categorie_overview);
+var _categorie_item2 = _interopRequireDefault(_categorie_item);
+
+var _helpers = require('./helpers.js');
+
+var _api = require('./api.js');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Overview = function () {
+	function Overview(categorie) {
+		var _this = this;
+
+		_classCallCheck(this, Overview);
+
+		this.categorie = categorie;
+
+		if (categorie) {
+
+			var filter = data.filter(function (el) {
+				return el.type === _this.categorie;
+			})[0];
+			this.data = filter.items;
+		} else {
+
+			this.data = data;
+		}
+	}
+
+	_createClass(Overview, [{
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
+
+			var fragment = document.createDocumentFragment(),
+			    main = document.createElement('main'),
+			    ul = document.createElement('ul'),
+			    div = document.createElement('div');
+
+			ul.classList.add('overview');
+			main.appendChild(ul);
+			div.classList.add('empty');
+
+			fragment.appendChild(main);
+			fragment.appendChild(div);
+
+			fetch('/overview_item.ejs').then(function (res) {
+				return res.text();
+			}).then(function (res) {
+
+				_this2.renderLi(res);
+			});
+
+			return fragment;
+		}
+	}, {
+		key: 'renderLi',
+		value: function renderLi(template) {
+
+			var ul = document.querySelector('.overview');
+
+			var counter = 0,
+			    i = 0;
+
+			while (counter < 20) {
+
+				var el = this.data[i];
+
+				if (el.length === 0) {
+
+					i++;
+					continue;
+				}
+
+				var li = ejs.render(template, { data: el, categorie: this.categorie });
+				ul.insertAdjacentHTML('beforeend', li);
+
+				var addedLi = ul.querySelectorAll('li'),
+				    lastLi = addedLi[addedLi.length - 1];
+
+				lastLi.addEventListener('click', _helpers.handleClickEvent);
+
+				i++;
+				counter++;
+			}
+		}
+	}]);
+
+	return Overview;
+}();
+
+exports.default = Overview;
+
+},{"./api.js":1,"./categorie_item.js":2,"./helpers.js":4}],8:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _overview = require('./overview.js');
+
+var _overview2 = _interopRequireDefault(_overview);
+
+var _header = require('./header.js');
+
+var _header2 = _interopRequireDefault(_header);
 
 var _categorie_item = require('./categorie_item.js');
 
@@ -766,53 +608,37 @@ var Routes = function () {
 			return {
 				'/': function _(req) {
 
-					var categorieOverview = new _categorie_overview2.default();
+					if (req.internal) {
+
+						document.body.appendChild((0, _header2.default)());
+					}
+
+					var categorieOverview = new _overview2.default();
 					document.body.appendChild(categorieOverview.render());
-
-					//getCategories( data => {
-
-					//categorieOverview.categorieData = allData
-
-					/*setTimeout( () => {
-     		categorieOverview.renderNewData()
-     	}, 5000 )*/
-
-					//} )
 				},
 				'/c/:categorie': function () {
 					var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req) {
-						var categorieData, categorieItem;
+						var categorieOverview;
 						return regeneratorRuntime.wrap(function _callee$(_context) {
 							while (1) {
 								switch (_context.prev = _context.next) {
 									case 0:
-										_context.prev = 0;
-										_context.next = 3;
-										return (0, _api.singleCategorieData)(req.paths.params.categorie);
+
+										if (req.internal) {
+
+											document.body.appendChild((0, _header2.default)([['Categorie overview', '/'], [req.paths.params.categorie]]));
+										}
+
+										categorieOverview = new _overview2.default(req.paths.params.categorie);
+
+										document.body.appendChild(categorieOverview.render());
 
 									case 3:
-										categorieData = _context.sent;
-										categorieItem = new _categorie_item2.default(categorieData);
-
-
-										document.body.appendChild(categorieItem.render());
-
-										_context.next = 11;
-										break;
-
-									case 8:
-										_context.prev = 8;
-										_context.t0 = _context['catch'](0);
-
-
-										console.log(_context.t0);
-
-									case 11:
 									case 'end':
 										return _context.stop();
 								}
 							}
-						}, _callee, _this, [[0, 8]]);
+						}, _callee, _this);
 					}));
 
 					function cCategorie(_x2) {
@@ -823,38 +649,28 @@ var Routes = function () {
 				}(),
 				'/c/:categorie/single/:single': function () {
 					var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(req) {
-						var singleData, singleItem;
+						var singleItem;
 						return regeneratorRuntime.wrap(function _callee2$(_context2) {
 							while (1) {
 								switch (_context2.prev = _context2.next) {
 									case 0:
-										_context2.prev = 0;
-										_context2.next = 3;
-										return (0, _api.singleItemData)(req.paths.params.categorie, req.paths.params.single);
+
+										if (req.internal) {
+
+											document.body.appendChild((0, _header2.default)([['Categorie overview', '/'], [req.paths.params.categorie, '/c/' + req.paths.params.categorie], [req.paths.params.single]]));
+										}
+
+										singleItem = new _categorie_item2.default(req.paths.params.categorie, req.paths.params.single);
+
+
+										singleItem.render();
 
 									case 3:
-										singleData = _context2.sent;
-										singleItem = new _categorie_item2.default(singleData);
-
-
-										document.body.appendChild(singleItem.renderDetailsPage());
-
-										_context2.next = 11;
-										break;
-
-									case 8:
-										_context2.prev = 8;
-										_context2.t0 = _context2['catch'](0);
-
-
-										console.log(_context2.t0);
-
-									case 11:
 									case 'end':
 										return _context2.stop();
 								}
 							}
-						}, _callee2, _this, [[0, 8]]);
+						}, _callee2, _this);
 					}));
 
 					function cCategorieSingleSingle(_x3) {
@@ -902,4 +718,4 @@ var Routes = function () {
 
 exports.default = Routes;
 
-},{"./api.js":1,"./categorie_item.js":2,"./categorie_overview.js":3}]},{},[5]);
+},{"./api.js":1,"./categorie_item.js":2,"./header.js":3,"./overview.js":7}]},{},[5]);

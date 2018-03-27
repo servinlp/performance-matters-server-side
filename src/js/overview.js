@@ -1,13 +1,23 @@
 import CategorieItem from './categorie_item.js'
+import { handleClickEvent } from './helpers.js'
 import { singleCategorieData } from './api.js'
 
 class Overview {
 
-	constructor() {
+	constructor( categorie ) {
 
-		this.allData = []
-		this.data = []
-		this.categorieItems = []
+		this.categorie = categorie
+
+		if ( categorie ) {
+
+			const filter = data.filter( el => el.type === this.categorie )[ 0 ]
+			this.data = filter.items
+
+		} else {
+
+			this.data = data
+
+		}
 
 	}
 
@@ -29,7 +39,6 @@ class Overview {
 			.then( res => res.text() )
 			.then( res => {
 
-				console.log( res )
 				this.renderLi( res )
 
 			} )
@@ -47,8 +56,7 @@ class Overview {
 
 		while( counter < 20 ) {
 
-			const el = data[ i ]
-			console.log( el )
+			const el = this.data[ i ]
 
 			if ( el.length === 0 ) {
 
@@ -57,8 +65,13 @@ class Overview {
 
 			}
 
-			const li = ejs.render( template, { data: el } )
-			ul.appendChild( li )
+			const li = ejs.render( template, { data: el, categorie: this.categorie } )
+			ul.insertAdjacentHTML( 'beforeend', li )
+
+			const addedLi = ul.querySelectorAll( 'li' ),
+				lastLi = addedLi[ addedLi.length - 1 ]
+
+			lastLi.addEventListener( 'click', handleClickEvent )
 
 			i++
 			counter++
