@@ -8,13 +8,9 @@ self.addEventListener( 'install', event => {
                 caches.open( CACHE )
                         .then( cache => {
 
-				return cache.addAll( [
-					'/offline',
-					'/public/css/style.css',
-					'https://fonts.googleapis.com/css?family=Roboto:400,700',
-					'/public/js/index.js',
-					'/public/js/ejs.min.js'
-				] )
+				return cache.add(
+					'/offline'
+				)
 
 			} )
                         .then( () => {
