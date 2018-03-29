@@ -65,3 +65,7 @@ Currently the service worker is implemented in a way that when it is installed, 
 is the offline page and the scripts that are used on all other pages. Then, the next time you visite the page, every request will be checked if it is not already in the cache. If it's not, then the request will go to the server. Otherwise the response will be from the service worker cache.
 
 Thanks to the service worker cache, you can get all/most resources even in the case that you are offline.
+
+**Job story**
+
+As **user** I would like my experience of the website to be the same, even if I have bad wifi or none at all.
