@@ -58,3 +58,10 @@ After
 After service worker
 
 ![](./readme-images/audit-after-service-worker.png)
+
+### Service worker
+
+Currently the service worker is implemented in a way that when it is installed, the only thing it will be put in the cache
+is the offline page and the scripts that are used on all other pages. Then, the next time you visite the page, every request will be checked if it is not already in the cache. If it's not, then the request will go to the server. Otherwise the response will be from the service worker cache.
+
+Thanks to the service worker cache, you can get all/most resources even in the case that you are offline.
