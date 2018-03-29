@@ -5,16 +5,18 @@
   "author": "servinlp <servin.nissen@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "serve": "nodemon app.js",
-    "sass": "sass --watch ./src/css/style.scss:./public/css/style.css",
-    "sass:build": "sass ./src/css/style.scss:./public/css/style.css",
+    "serve": "nodemon index.js",
+    "sass": "node-sass -w ./src/css/style.scss -o ./public/css",
+    "sass:build": "node-sass ./src/css/style.scss -o ./public/css",
     "uglify": "uglifyjs --compress -- ./public/js/bundle.js -- --output ./bundle.min.js",
     "js:watch": "onchange './src/js/*.js' -- yarn run js:build",
     "js:build": "parallelshell \"yarn run js:copy\" \"yarn run js:compile\"",
     "js:copy": "cpx './src/js/*.js' public/js",
     "js:compile": "browserify ./public/js/index.js -o ./public/js/bundle.js -t [ babelify --presets [ env ] ]",
-    "build": "yarn run sass:build && yarn run js:build",
-    "start": "parallelshell \"yarn run serve\" \"yarn run sass\" \"yarn run js:watch\""
+    "build": "yarn run sass:build && yarn run js:build && yarn run sw:copy",
+    "sw": "onchange './src/sw/*.js' -- yarn run sw:copy",
+    "sw:copy": "cpx './src/sw/*.js' ./public",
+    "start": "parallelshell \"yarn run serve\" \"yarn run sass\" \"yarn run js:watch\" \"yarn run sw\""
   },
   "nodemonConfig": {
     "ignore": [
@@ -29,7 +31,7 @@
     "express": "^4.16.3",
     "helmet": "^3.12.0",
     "node-fetch": "^2.1.1",
-    "uglify-js": "^3.3.16"
+    "node-sass": "^4.8.3"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -40,6 +42,7 @@
     "cpx": "^1.5.0",
     "nodemon": "^1.17.2",
     "onchange": "^3.3.0",
-    "parallelshell": "^3.0.2"
+    "parallelshell": "^3.0.2",
+    "uglify-js": "^3.3.16"
   }
 }

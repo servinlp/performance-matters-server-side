@@ -16,6 +16,7 @@ app.use( helmet() )
 
 app.get( '*', ( req, res, next ) => {
 
+	res.setHeader( 'Access-Control-Allow-Origin', '*' )
 	res.locals.allData = apiData
 	next()
 
@@ -49,6 +50,12 @@ app.get( '/c/:categorie/single/:slug', ( req, res ) => {
 		categorie: req.params.categorie,
 		data: data
 	} )
+
+} )
+
+app.get( '/offline', ( req, res ) => {
+
+	res.render( 'offline' )
 
 } )
 

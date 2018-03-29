@@ -119,10 +119,11 @@ function singleCategorieData( categorie ) {
 
 				const data = unique( res.results.bindings.map( el => {
 
-					const obj = {
+					const httpsImageUrl = el.img.value.replace( /^http:\/\//i, 'https://' ),
+					obj = {
 						cho: el.cho.value,
 						title: el.title.value,
-						img: el.img.value,
+						img: httpsImageUrl,
 						slug: '/c/' + categorie.toLowerCase().replace( / /g, '-' ) + '/single/' + el.title.value.toLowerCase().replace( / /g, '-' ),
 						titleSlug: el.title.value.toLowerCase().replace( / /g, '-' ),
 						categorie: categorie.toLowerCase()

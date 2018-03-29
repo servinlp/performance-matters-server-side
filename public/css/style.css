@@ -82,6 +82,7 @@ ul.overview {
     font-size: 0.6em;
     margin-left: 1em; }
   ul.overview a {
+    display: block;
     text-decoration: none; }
 
 .details {
@@ -101,5 +102,3 @@ ul.overview {
     color: #ffffff; }
   .details div {
     font-size: 1.2em; }
-
-/*# sourceMappingURL=style.css.map */

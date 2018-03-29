@@ -54,3 +54,7 @@ Before
 After
 
 ![](./readme-images/audit-after.png)
+
+After service worker
+
+![](./readme-images/audit-after-service-worker.png)
